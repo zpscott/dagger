@@ -1,6 +1,4 @@
 dagger
 dagger.internal
 dagger.internal.codegen
-dagger.internal.codegen.dagger1
 dagger.internal.codegen.writer
-dagger.internal.loaders
