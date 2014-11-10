@@ -1,10 +1,8 @@
+.*
+
 *~
 \#*\#
 
-.classpath
-.factorypath
-.project
-.settings
 eclipsebin
 
 bin
@@ -17,10 +15,12 @@ target
 pom.xml.*
 release.properties
 
-.idea
 *.iml
 classes
 
 obj
 
-.DS_Store
+Gemfile
+Gemfile.lock
+
+_site
