@@ -51,7 +51,7 @@ class CoffeeMaker {
 
 If your class has `@Inject`-annotated fields but no `@Inject`-annotated constructor, Dagger will inject those fields if requested, but will not create new instances. Add a no-argument constructor with the `@Inject` annotation to indicate that Dagger may create instances as well.
 
-Dagger also supports method injection, though constructor or field injecton are typically preferred.
+Dagger also supports method injection, though constructor or field injection are typically preferred.
 
 Classes that lack `@Inject` annotations cannot be constructed by Dagger.
 
