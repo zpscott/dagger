@@ -2,3 +2,5 @@ dagger
 dagger.internal
 dagger.internal.codegen
 dagger.internal.codegen.writer
+dagger.producers
+dagger.producers.internal
