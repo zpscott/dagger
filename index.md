@@ -291,21 +291,13 @@ In a Maven project, one would include the runtime in the dependencies section of
     <artifactId>dagger</artifactId>
     <version>{{site.dagger.version}}</version>
   </dependency>
+  <dependency>
+    <groupId>{{site.dagger.groupId}}</groupId>
+    <artifactId>dagger-compiler</artifactId>
+    <version>{{site.dagger.version}}</version>
+    <optional>true</optional>
+  </dependency>
 </dependencies>
-<build>
-  <plugins>
-    <plugin>
-      <artifactId>maven-compiler-plugin</artifactId>
-      <dependencies>
-        <dependency>
-          <groupId>{{site.dagger.groupId}}</groupId>
-          <artifactId>dagger-compiler</artifactId>
-          <version>{{site.dagger.version}}</version>
-        </dependency>
-      </dependencies>
-    </plugin>
-  </plugins>
-</build>
 ```
 
 ## License
