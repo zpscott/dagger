@@ -27,11 +27,17 @@
   <body unresolved fullbleed layout vertical>
     <core-scaffold mode="waterfall-tall">
       <nav navigation>
+        <paper-item label="Home">
+          <a href="/"></a>
+        </paper-item>
+        <paper-item label="Migrating from Dagger 1">
+          <a href="/dagger-1-migration.html"></a>
+        </paper-item>
         <h4>Project Pages</h4>
         <paper-item label="GitHub" icon="open-in-browser">
           <a href="https://github.com/google/dagger" target="_blank"></a>
         </paper-item>
-        <paper-item label="Javadoc" icon="open-in-browser">
+        <paper-item label="Latest API docs (javadoc)" icon="open-in-browser">
           <a href="api/latest/" target="_blank"></a>
         </paper-item>
         <h4>Resources</h4>
@@ -43,7 +49,7 @@
           <a href="https://groups.google.com/forum/#!forum/dagger-discuss" target="_blank"></a>
         </paper-item>
       </nav>
-      <h1 tool class="indent bottom title">Dagger 2</h1>
+      <h1 tool class="indent bottom title">{{page.title}}</h1>
       <div tool class="bottom fit">
         <div flex></div>
         <github-fab id="fork-button"></github-fab>
