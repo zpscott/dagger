@@ -1,5 +1,6 @@
 ---
 layout: default
+title: Dagger 2
 ---
 
 The best classes in any application are the ones that do stuff: the `BarcodeDecoder`, the `KoopaPhysicsEngine`, and the `AudioStreamer`. These classes have dependencies; perhaps a `BarcodeCameraFinder`, `DefaultPhysicsEngine`, and an `HttpStreamer`.
@@ -8,7 +9,7 @@ To contrast, the worst classes in any application are the ones that take up spac
 
 Dagger is a replacement for these `FactoryFactory` classes that implements the [dependency injection][DI] design pattern without the burden of writing the boilerplate. It allows you to focus on the interesting classes. Declare dependencies, specify how to satisfy them, and ship your app.
 
-By building on standard [`javax.inject`](http://docs.oracle.com/javaee/7/api/javax/inject/package-summary.html) annotations ([JSR-330](https://jcp.org/en/jsr/detail?id=330)), each class is **easy to test**. You don't need a bunch of boilerplate just to swap the `RpcCreditCardService` out for a `FakeCreditCardService`.
+By building on standard [`javax.inject`](http://docs.oracle.com/javaee/7/api/javax/inject/package-summary.html) annotations ([JSR 330](https://jcp.org/en/jsr/detail?id=330)), each class is **easy to test**. You don't need a bunch of boilerplate just to swap the `RpcCreditCardService` out for a `FakeCreditCardService`.
 
 Dependency injection isn't just for testing. It also makes it easy to create **reusable, interchangeable modules**. You can share the same `AuthenticationModule`  across all of your apps. And you can run `DevLoggingModule` during development and `ProdLoggingModule` in production to get the right behavior in each situation.
 
