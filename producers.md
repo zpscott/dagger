@@ -30,12 +30,14 @@ Here is a simple example that mimics a server’s request-handling flow:
 ```java
 @ProducerModule(includes = UserModule.class)
 final class UserResponseModule {
-  @Produces ListenableFuture<UserData> lookUpUserData(
+  @Produces
+  static ListenableFuture<UserData> lookUpUserData(
       User user, UserDataStub stub) {
     return stub.lookUpData(user);
   }
 
-  @Produces Html renderHtml(UserData data, UserHtmlTemplate template) {
+  @Produces
+  static Html renderHtml(UserData data, UserHtmlTemplate template) {
     return template.render(data);
   }
 }
@@ -92,7 +94,8 @@ If a producer method would like to “catch” that exception, the method can
 request a [Produced&lt;T>][Produced] instead of a T. For example:
 
 ```java
-@Produces Html renderHtml(
+@Produces
+static Html renderHtml(
     Produced<UserData> data,
     UserHtmlTemplate template,
     ErrorHtmlTemplate errorTemplate) {
@@ -121,7 +124,8 @@ method returns a `ListenableFuture`, which can then be fed to the framework. For
 example:
 
 ```java
-@Produces ListenableFuture<UserData> lookUpUserData(
+@Produces
+static ListenableFuture<UserData> lookUpUserData(
     Flags flags,
     @Standard Producer<UserData> standardUserData,
     @Experimental Producer<UserData> experimentalUserData) {
@@ -144,12 +148,12 @@ in [ordinary Dagger](multibindings). For example:
 ```java
 @ProducerModule
 final class UserDataModule {
-  @Produces(type = SET) ListenableFuture<Data> standardData(…) { … }
-  @Produces(type = SET) ListenableFuture<Data> extraData(…) { … }
-  @Produces(type = SET) Data synchronousData(…) { … }
-  @Produces(type = SET_VALUES) Set<ListenableFuture<Data>> rest(…) { … }
+  @Produces(type = SET) static ListenableFuture<Data> standardData(…) { … }
+  @Produces(type = SET) static ListenableFuture<Data> extraData(…) { … }
+  @Produces(type = SET) static Data synchronousData(…) { … }
+  @Produces(type = SET_VALUES) static Set<ListenableFuture<Data>> rest(…) { … }
 
-  @Produces … collect(Set<Data> data) { … }
+  @Produces static … collect(Set<Data> data) { … }
 }
 ```
 
@@ -167,12 +171,13 @@ Map multibindings are similar:
 @ProducerModule
 final class DispatchModule {
   @Produces(type = MAP) @DispatchPath("/user")
-  ListenableFuture<Html> dispatchUser(…) { … }
+  static ListenableFuture<Html> dispatchUser(…) { … }
 
   @Produces(type = MAP) @DispatchPath("/settings")
-  ListenableFuture<Html> dispatchSettings(…) { … }
+  static ListenableFuture<Html> dispatchSettings(…) { … }
 
-  @Produces ListenableFuture<Html> dispatch(
+  @Produces
+  static ListenableFuture<Html> dispatch(
       Map<DispatchPath, Producer<Html>> dispatchers, Url url) {
     return dispatchers.get(url.path()).get();
   }
@@ -202,7 +207,7 @@ interface RequestComponent {
 
 @ProducerModule
 final class UserDataModule {
-  @Produces ListenableFuture<UserData> userData(Request request, …) { … }
+  @Produces static ListenableFuture<UserData> userData(Request request, …) { … }
 }
 
 @ProductionComponent(

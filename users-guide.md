@@ -115,7 +115,7 @@ return type defines which dependency it satisfies.
 For example, `provideHeater()` is invoked whenever a `Heater` is required:
 
 ```java
-@Provides Heater provideHeater() {
+@Provides static Heater provideHeater() {
   return new ElectricHeater();
 }
 ```
@@ -124,7 +124,7 @@ It's possible for `@Provides` methods to have dependencies of their own. This
 one returns a `Thermosiphon` whenever a `Pump` is required:
 
 ```java
-@Provides Pump providePump(Thermosiphon pump) {
+@Provides static Pump providePump(Thermosiphon pump) {
   return pump;
 }
 ```
@@ -135,17 +135,18 @@ have an [`@Module`][Module] annotation.
 ```java
 @Module
 class DripCoffeeModule {
-  @Provides Heater provideHeater() {
+  @Provides static Heater provideHeater() {
     return new ElectricHeater();
   }
 
-  @Provides Pump providePump(Thermosiphon pump) {
+  @Provides static Pump providePump(Thermosiphon pump) {
     return pump;
   }
 }
 ```
 
-By convention, `@Provides` methods are named with a `provide` prefix and module classes are named with a `Module` suffix.
+By convention, `@Provides` methods are named with a `provide` prefix and module
+classes are named with a `Module` suffix.
 
 ### Building the Graph
 
@@ -178,10 +179,12 @@ CoffeeShop coffeeShop = DaggerCoffeeShop.builder()
 ```
 
 Any module with an accessible default constructor can be elided as the builder
-will construct an instance automatically if none is set.  If all dependencies
-can be constructed in that manner, the generated implementation will also have a
-`create()` method that can be used to get a new instance without having to deal
-with the builder.
+will construct an instance automatically if none is set.  And for any module
+whose `@Provides` methods are all static, the implementation doesn't need an
+instance at all.  If all dependencies can be constructed without the user
+creating a dependency instance, then the generated implementation will also
+have a `create()` method that can be used to get a new instance without having
+to deal with the builder.
 
 ```java
 CoffeeShop coffeeShop = DaggerCoffeeShop.create();
@@ -216,7 +219,7 @@ Annotate an `@Provides` method or injectable class with
 all of its clients.
 
 ```java
-@Provides @Singleton Heater provideHeater() {
+@Provides @Singleton static Heater provideHeater() {
   return new ElectricHeater();
 }
 ```
@@ -341,11 +344,11 @@ class ExpensiveCoffeeMaker {
 Supply qualified values by annotating the corresponding `@Provides` method.
 
 ```java
-@Provides @Named("hot plate") Heater provideHotPlateHeater() {
+@Provides @Named("hot plate") static Heater provideHotPlateHeater() {
   return new ElectricHeater(70);
 }
 
-@Provides @Named("water") Heater provideWaterHeater() {
+@Provides @Named("water") static Heater provideWaterHeater() {
   return new ElectricHeater(93);
 }
 ```
@@ -363,7 +366,7 @@ missing a binding for `Executor`:
 ```java
 @Module
 class DripCoffeeModule {
-  @Provides Heater provideHeater(Executor executor) {
+  @Provides static Heater provideHeater(Executor executor) {
     return new CpuHeater(executor);
   }
 }

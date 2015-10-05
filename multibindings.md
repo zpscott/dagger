@@ -28,7 +28,7 @@ to a module that returns an element and is annotated with
 @Module
 class MyModuleA {
   @Provides(type = SET)
-  String provideOneString(DepA depA, DepB depB) {
+  static String provideOneString(DepA depA, DepB depB) {
     return "ABC";
   }
 }
@@ -41,7 +41,7 @@ that returns a subset and is annotated with [`@Provides(type = SET_VALUES)`]:
 @Module
 class MyModuleB {
   @Provides(type = SET_VALUES)
-  Set<String> provideSomeStrings(DepA depA, DepB depB) {
+  static Set<String> provideSomeStrings(DepA depA, DepB depB) {
     return new HashSet<Foo>(Arrays.asList("DEF", "GHI"));
   }
 }
@@ -55,7 +55,7 @@ depending on that set is an error. If you want to allow an empty set, then add a
 @Module
 class MyEmptySetModule {
   @Provides(type = SET_VALUES)
-  Set<Foo> primeEmptyFooSet() {
+  static Set<Foo> primeEmptyFooSet() {
     return Collections.emptySet();
   }
 }
@@ -99,7 +99,7 @@ with the qualifier:
 class MyModuleC {
   @Provides(type = SET)
   @MyQualifier
-  Foo provideOneFoo(DepA depA, DepB depB) {
+  static Foo provideOneFoo(DepA depA, DepB depB) {
     return new Foo(depA, depB);
   }
 }
@@ -107,7 +107,7 @@ class MyModuleC {
 @Module
 class MyModuleD {
   @Provides
-  FooSetUser provideFooSetUser(@MyQualifier Set<Foo> foos) { … }
+  static FooSetUser provideFooSetUser(@MyQualifier Set<Foo> foos) { … }
 }
 ```
 
@@ -138,13 +138,13 @@ the standard annotations in [`dagger.mapkeys`]:
 class MyModule {
   @Provides(type = MAP)
   @StringKey("foo")
-  Long provideFooValue() {
+  static Long provideFooValue() {
     return 100L;
   }
 
   @Provides(type = MAP)
   @ClassKey(Thing.class)
-  String provideThingValue() {
+  static String provideThingValue() {
     return "value for Thing";
   }
 }
@@ -186,13 +186,13 @@ enum MyEnum {
 class MyModule {
   @Provides(type = MAP)
   @MyEnumKey(MyEnum.ABC)
-  String provideABCValue() {
+  static String provideABCValue() {
     return "value for ABC";
   }
 
   @Provides(type = MAP)
   @MyNumberClassKey(BigDecimal.class)
-  String provideBigDecimalValue() {
+  static String provideBigDecimalValue() {
     return "value for BigDecimal";
   }
 }
@@ -233,7 +233,7 @@ well.
 class MyModule {
   @Provides(type = MAP)
   @MyKey(name = "abc", implementingClass = Abc.class, thresholds = {1, 5, 10})
-  String provideAbc1510Value() {
+  static String provideAbc1510Value() {
     return "foo";
   }
 }
@@ -280,14 +280,14 @@ transform into a non-multibound map.
 @Module
 class MyModule {
   @Provides(type = SET)
-  Map.Entry<Foo, Bar> entryOne(…) {
+  static Map.Entry<Foo, Bar> entryOne(…) {
     Foo key = …;
     Bar value = …;
     return new SimpleImmutableEntry(key, value);
   }
 
   @Provides(type = SET)
-  Map.Entry<Foo, Bar> entryTwo(…) {
+  static Map.Entry<Foo, Bar> entryTwo(…) {
     Foo key = …;
     Bar value = …;
     return new SimpleImmutableEntry(key, value);
@@ -297,7 +297,7 @@ class MyModule {
 @Module
 class MyMapModule {
   @Provides
-  Map<Foo, Bar> fooBarMap(Set<Map.Entry<Foo, Bar>> entries) {
+  static Map<Foo, Bar> fooBarMap(Set<Map.Entry<Foo, Bar>> entries) {
     Map<Foo, Bar> fooBarMap = new LinkedHashMap<>(entries.size());
     for (Map.Entry<Foo, Bar> entry : entries) {
       fooBarMap.put(entry.getKey(), entry.getValue());
@@ -316,7 +316,8 @@ your non-multibound map can have `Provider` values.
 @Module
 class MyModule {
   @Provides(type = SET)
-  Map.Entry<Foo, Provider<Bar>> entry(Provider<BarSubclass> barSubclassProvider) {
+  static Map.Entry<Foo, Provider<Bar>> entry(
+      Provider<BarSubclass> barSubclassProvider) {
     Foo key = …;
     return new SimpleImmutableEntry(key, barSubclassProvider);
   }
@@ -325,7 +326,8 @@ class MyModule {
 @Module
 class MyProviderMapModule {
   @Provides
-  Map<Foo, Provider<Bar>> fooBarProviderMap(Set<Map.Entry<Foo, Provider<Bar>>> entries) {
+  static Map<Foo, Provider<Bar>> fooBarProviderMap(
+      Set<Map.Entry<Foo, Provider<Bar>>> entries) {
     return …;
   }
 }
@@ -357,24 +359,24 @@ interface ParentComponent {
 @Module
 class ParentModule {
   @Provides(type = SET)
-  String string1() {
+  static String string1() {
     "parent string 1";
   }
 
   @Provides(type = SET)
-  String string2() {
+  static String string2() {
     "parent string 2";
   }
 
   @Provides(type = MAP)
   @StringKey("a")
-  String stringA() {
+  static String stringA() {
     "parent string A";
   }
 
   @Provides(type = MAP)
   @StringKey("b")
-  String stringB() {
+  static String stringB() {
     "parent string B";
   }
 }
@@ -388,24 +390,24 @@ interface ChildComponent {
 @Module
 class ChildModule {
   @Provides(type = SET)
-  String string3() {
+  static String string3() {
     "child string 3";
   }
 
   @Provides(type = SET)
-  String string4() {
+  static String string4() {
     "child string 4";
   }
 
   @Provides(type = MAP)
   @StringKey("c")
-  String stringC() {
+  static String stringC() {
     "child string C";
   }
 
   @Provides(type = MAP)
   @StringKey("d")
-  String stringD() {
+  static String stringD() {
     "child string D";
   }
 }
