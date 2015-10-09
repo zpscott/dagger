@@ -154,8 +154,7 @@ scope to a component.
 ## Subgraphs
 
 Dagger 1 provided `ObjectGraph.plus` as the mechanism for creating new graphs
-from existing ones.  Dagger 2 has
-[two mechanisms](/api/latest/dagger/Component.html#component-relationships) for
+from existing ones.  Dagger 2 has [two mechanisms][component-relationships] for
 composing graphs - each with its own advantages - but
 [subcomponents][Subcomponent] is the most direct analog.  Defining a
 subcomponent is very similar to defining a component and the component is
@@ -179,7 +178,7 @@ MySubcomponent mySubcomponent = myComponent.plus(new ChildGraphModule("child!"))
 ```
 
 Subcomponents are further described in the [`@Subcomponent`][Subcomponent] and
-the [`@Component`](/api/latest/dagger/Component.html#subcomponents) javadoc.
+the [`@Component`][component-subcomponents] javadoc.
 
 ## Nullability
 
@@ -189,15 +188,17 @@ have to annotate injection sites and provides methods with the `@Nullable` of
 their choice. Any mismatch in nullability will be reported as a compile-time
 error.
 
-[Component]: </api/latest/dagger/Component.html>
-[Component-modules]: </api/latest/dagger/Component.html#modules()>
-[Lazy]: </api/latest/dagger/Lazy.html>
-[MembersInjector]: </api/latest/dagger/MembersInjector.html>
-[Module]: </api/latest/dagger/Module.html>
-[Provides]: </api/latest/dagger/Provides.html>
-[Subcomponent]: </api/latest/dagger/Subcomponent.html>
+[Component]: /api/latest/dagger/Component.html
+[Component-modules]: /api/latest/dagger/Component.html#modules()
+[component-relationships]: /api/latest/dagger/Component.html#component-relationships
+[component-subcomponents]: /api/latest/dagger/Component.html#subcomponents
+[Lazy]: /api/latest/dagger/Lazy.html
+[MembersInjector]: /api/latest/dagger/MembersInjector.html
+[Module]: /api/latest/dagger/Module.html
+[Provides]: /api/latest/dagger/Provides.html
+[Subcomponent]: /api/latest/dagger/Subcomponent.html
 
 
-[Provider]: <http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html>
-[Scope]: <http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html>
-[Singleton]: <http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html>
+[Provider]: http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html
+[Scope]: http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html
+[Singleton]: http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html

@@ -225,8 +225,8 @@ all of its clients.
 ```
 
 The `@Singleton` annotation on an injectable class also serves as
-[documentation](http://docs.oracle.com/javase/7/docs/api/java/lang/annotation/Documented.html). It
-reminds potential maintainers that this class may be shared by multiple threads.
+[documentation][Documented]. It reminds potential maintainers that this class
+may be shared by multiple threads.
 
 ```java
 @Singleton
@@ -441,18 +441,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-[DI]: <http://en.wikipedia.org/wiki/Dependency_injection>
-
-[Component]: </api/latest/dagger/Component.html>
-[Lazy]: </api/latest/dagger/Lazy.html>
-[Module]: </api/latest/dagger/Module.html>
-[Provides]: </api/latest/dagger/Provides.html>
-
+[Component]: /api/latest/dagger/Component.html
+[DI]: http://en.wikipedia.org/wiki/Dependency_injection
+[Lazy]: /api/latest/dagger/Lazy.html
+[Module]: /api/latest/dagger/Module.html
+[Provides]: /api/latest/dagger/Provides.html
 
 
 
-[Named]: <http://docs.oracle.com/javaee/7/api/javax/inject/Named.html>
-[Provider]: <http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html>
-[Qualifier]: <http://docs.oracle.com/javaee/7/api/javax/inject/Qualifier.html>
-[Scope]: <http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html>
-[Singleton]: <http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html>
+[Documented]: http://docs.oracle.com/javase/7/docs/api/java/lang/annotation/Documented.html
+[Named]: http://docs.oracle.com/javaee/7/api/javax/inject/Named.html
+[Provider]: http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html
+[Qualifier]: http://docs.oracle.com/javaee/7/api/javax/inject/Qualifier.html
+[Scope]: http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html
+[Singleton]: http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html

@@ -117,8 +117,8 @@ component will fail with an exception.
 
 ### Lazy execution
 
-Producer methods can request a [Producer&lt;T>][Producer], which is analogous to a
-[Provider<T>][Provider]: it delays the computation of the associated binding
+Producer methods can request a [`Producer<T>`][Producer], which is analogous to
+a [`Provider<T>`][Provider]: it delays the computation of the associated binding
 until a `get()` method is called. `Producer<T>` is non-blocking; its `get()`
 method returns a `ListenableFuture`, which can then be fed to the framework. For
 example:
@@ -143,7 +143,7 @@ graphs.
 ### Multibindings
 
 Several bindings of the same type can be collected into a set or map, just like
-in [ordinary Dagger](multibindings). For example:
+in [ordinary Dagger](multibindings.md). For example:
 
 ```java
 @ProducerModule
