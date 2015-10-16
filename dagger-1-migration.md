@@ -12,12 +12,10 @@ for migrating.
 
 ## Injected types
 
-Dagger 2 continues to rely on [JSR 330](https://jcp.org/en/jsr/detail?id=330)
-for declaring injection sites. All of the
-[types of injection](http://docs.oracle.com/javaee/6/api/javax/inject/Inject.html)
-supported by Dagger 1 (field and constructor) continue to be supported by Dagger
-2, but Dagger 2 supports method injection as well. Dagger 2 ***does not***
-support static injection.
+Dagger 2 continues to rely on [JSR 330] for declaring injection sites. All of
+the [types of injection][Inject] supported by Dagger 1 (field and constructor)
+continue to be supported by Dagger 2, but Dagger 2 supports method injection
+as well. Dagger 2 ***does not*** support static injection.
 
 ## Framework types
 
@@ -192,13 +190,14 @@ error.
 [Component-modules]: /api/latest/dagger/Component.html#modules()
 [component-relationships]: /api/latest/dagger/Component.html#component-relationships
 [component-subcomponents]: /api/latest/dagger/Component.html#subcomponents
+[Inject]: http://docs.oracle.com/javaee/7/api/javax/inject/Inject.html
+[JSR 330]: https://jcp.org/en/jsr/detail?id=330
 [Lazy]: /api/latest/dagger/Lazy.html
 [MembersInjector]: /api/latest/dagger/MembersInjector.html
 [Module]: /api/latest/dagger/Module.html
-[Provides]: /api/latest/dagger/Provides.html
-[Subcomponent]: /api/latest/dagger/Subcomponent.html
-
-
 [Provider]: http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html
+[Provides]: /api/latest/dagger/Provides.html
 [Scope]: http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html
 [Singleton]: http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html
+[Subcomponent]: /api/latest/dagger/Subcomponent.html
+
