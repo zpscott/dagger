@@ -17,6 +17,7 @@ package dagger.internal.codegen;
 
 import com.google.auto.common.BasicAnnotationProcessor.ProcessingStep;
 import com.google.auto.common.MoreElements;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
 import com.google.common.collect.SetMultimap;
@@ -78,8 +79,8 @@ final class ComponentProcessingStep extends AbstractComponentProcessingStep {
   protected ImmutableSet<ComponentDescriptor> componentDescriptors(
       SetMultimap<Class<? extends Annotation>, Element> elementsByAnnotation) {
     Map<Element, ValidationReport<TypeElement>> builderReportsByComponent =
-        processComponentBuilders(elementsByAnnotation.get(Component.Builder.class));
-    Set<Element> subcomponentBuilderElements = elementsByAnnotation.get(Subcomponent.Builder.class);
+        ImmutableMap.<Element, ValidationReport<TypeElement>>of();
+    Set<Element> subcomponentBuilderElements = ImmutableSet.<Element>of();
     Map<Element, ValidationReport<TypeElement>> builderReportsBySubcomponent =
         processSubcomponentBuilders(subcomponentBuilderElements);
     Set<Element> subcomponentElements = elementsByAnnotation.get(Subcomponent.class);

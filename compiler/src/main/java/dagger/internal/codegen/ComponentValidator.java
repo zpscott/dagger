@@ -141,8 +141,7 @@ final class ComponentValidator {
           componentType.annotationType().getSimpleName()), subject);
     }
 
-    ImmutableList<DeclaredType> builders =
-        enclosedBuilders(subject, componentType.builderAnnotationType());
+    ImmutableList<DeclaredType> builders = ImmutableList.<DeclaredType>of();
     if (builders.size() > 1) {
       builder.addItem(
           String.format(ErrorMessages.builderMsgsFor(componentType).moreThanOne(), builders),
