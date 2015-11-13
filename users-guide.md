@@ -3,9 +3,6 @@ layout: default
 title: User's Guide
 ---
 
-# User's Guide
-
-
 The best classes in any application are the ones that do stuff: the
 `BarcodeDecoder`, the `KoopaPhysicsEngine`, and the `AudioStreamer`. These
 classes have dependencies; perhaps a `BarcodeCameraFinder`,
@@ -30,6 +27,7 @@ Dependency injection isn't just for testing. It also makes it easy to create
 `AuthenticationModule` across all of your apps. And you can run
 `DevLoggingModule` during development and `ProdLoggingModule` in production to
 get the right behavior in each situation.
+
 
 ## Why Dagger 2 is Different
 

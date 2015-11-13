@@ -3,9 +3,6 @@ layout: default
 title: Subcomponents
 ---
 
-# Subcomponents
-
-
 Subcomponents are components that inherit and extend the object graph of a
 parent component. You can use them to partition your application's object graph
 into subgraphs either to encapsulate different parts of your application from
@@ -19,6 +16,7 @@ subcomponent depend on objects bound in sibling subcomponents.
 
 In other words, the object graph of a subcomponent's parent component is a
 subgraph of the object graph of the subcomponent itself.
+
 
 ## Declaring a subcomponent
 

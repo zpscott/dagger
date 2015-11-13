@@ -3,12 +3,11 @@ layout: default
 title: Migrating from Dagger 1
 ---
 
-# Migrating from Dagger 1
-
 While Dagger 1 and Dagger 2 are similar in many ways, one is not a drop-in
 replacement for the other.  This guide will highlight both the API and
 conceptual differences between the two versions and provide recommended patterns
 for migrating.
+
 
 ## Injected types
 

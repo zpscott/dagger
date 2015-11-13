@@ -3,9 +3,6 @@ layout: default
 title: Multibindings
 ---
 
-# Multibindings
-
-
 Dagger allows you to bind several objects into a collection even when the
 objects are bound in different modules using mutlbindings. Dagger assembles the
 collection so that application code can inject it without depending directly on
@@ -16,7 +13,6 @@ where several modules can contribute individual plugin interface implementations
 so that a central class can use the entire set of plugins. Or you could have
 several modules contribute individual service providers to a map, keyed by name.
 
-[TOC]
 
 ## Set multibindings {#set-multibindings}
 
