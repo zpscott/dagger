@@ -3,9 +3,6 @@ layout: default
 title: User's Guide
 ---
 
-# User's Guide
-
-
 The best classes in any application are the ones that do stuff: the
 `BarcodeDecoder`, the `KoopaPhysicsEngine`, and the `AudioStreamer`. These
 classes have dependencies; perhaps a `BarcodeCameraFinder`,
@@ -21,9 +18,7 @@ Dagger is a replacement for these `FactoryFactory` classes that implements the
 boilerplate. It allows you to focus on the interesting classes. Declare
 dependencies, specify how to satisfy them, and ship your app.
 
-By building on standard
-[`javax.inject`](http://docs.oracle.com/javaee/7/api/javax/inject/package-summary.html)
-annotations ([JSR 330](https://jcp.org/en/jsr/detail?id=330)), each class is
+By building on standard [`javax.inject`] annotations ([JSR 330]), each class is
 **easy to test**. You don't need a bunch of boilerplate just to swap the
 `RpcCreditCardService` out for a `FakeCreditCardService`.
 
@@ -33,29 +28,29 @@ Dependency injection isn't just for testing. It also makes it easy to create
 `DevLoggingModule` during development and `ProdLoggingModule` in production to
 get the right behavior in each situation.
 
+
 ## Why Dagger 2 is Different
 
 [Dependency injection][DI] frameworks have existed for years with a whole
 variety of APIs for configuring and injecting.  So, why reinvent the wheel?
 Dagger 2 is the first to **implement the full stack with generated code**. The
 guiding principle is to generate code that mimics the code that a user might
-have hand-written to ensure that dependency injection is a simple, traceable and
-performant as it can be. For more background on the design, watch
-[this talk](https://www.youtube.com/watch?v=oK_XtfXPkqw)
-([slides](https://docs.google.com/presentation/d/1fby5VeGU9CN8zjw4lAb2QPPsKRxx6mSwCe9q7ECNSJQ/pub?start=false&loop=false&delayms=3000))
-by [+Gregory Kick](https://google.com/+GregoryKick/).
+have hand-written to ensure that dependency injection is as simple, traceable
+and performant as it can be. For more background on the design, watch
+[this talk](https://youtu.be/oK_XtfXPkqw) ([slides][Dagger Talk Slides]) by
+[+Gregory Kick].
 
-## Using Dagger We'll demonstrate dependency injection and Dagger by building a
-coffee maker. For complete sample code that you can compile and run, see
-Dagger's
-[coffee example](https://github.com/google/dagger/tree/master/examples/simple/src/main/java/coffee).
+## Using Dagger
+
+We'll demonstrate dependency injection and Dagger by building a coffee maker.
+For complete sample code that you can compile and run, see Dagger's
+[coffee example][CoffeeMaker example].
 
 ### Declaring Dependencies
 
 Dagger constructs instances of your application classes and satisfies their
-dependencies. It uses the
-[`javax.inject.Inject`](http://docs.oracle.com/javaee/7/api/javax/inject/Inject.html)
-annotation to identify which constructors and fields it is interested in.
+dependencies. It uses the [`javax.inject.Inject`] annotation to identify
+which constructors and fields it is interested in.
 
 Use `@Inject` to annotate the constructor that Dagger should use to create
 instances of a class. When a new instance is requested, Dagger will obtain the
@@ -115,7 +110,7 @@ return type defines which dependency it satisfies.
 For example, `provideHeater()` is invoked whenever a `Heater` is required:
 
 ```java
-@Provides Heater provideHeater() {
+@Provides static Heater provideHeater() {
   return new ElectricHeater();
 }
 ```
@@ -124,7 +119,7 @@ It's possible for `@Provides` methods to have dependencies of their own. This
 one returns a `Thermosiphon` whenever a `Pump` is required:
 
 ```java
-@Provides Pump providePump(Thermosiphon pump) {
+@Provides static Pump providePump(Thermosiphon pump) {
   return pump;
 }
 ```
@@ -135,29 +130,29 @@ have an [`@Module`][Module] annotation.
 ```java
 @Module
 class DripCoffeeModule {
-  @Provides Heater provideHeater() {
+  @Provides static Heater provideHeater() {
     return new ElectricHeater();
   }
 
-  @Provides Pump providePump(Thermosiphon pump) {
+  @Provides static Pump providePump(Thermosiphon pump) {
     return pump;
   }
 }
 ```
 
-By convention, `@Provides` methods are named with a `provide` prefix and module classes are named with a `Module` suffix.
+By convention, `@Provides` methods are named with a `provide` prefix and module
+classes are named with a `Module` suffix.
 
 ### Building the Graph
 
 The `@Inject` and `@Provides`-annotated classes form a graph of objects, linked
 by their dependencies. Calling code like an application's `main` method or an
-Android
-[`Application`](http://developer.android.com/reference/android/app/Application.html)
-accesses that graph via a well-defined set of roots. In Dagger 2, that set is
-defined by an interface with methods that have no arguments and return the
-desired type. By applying the [`@Component`][Component] annotation to such an
-interface and passing the [module][Module] types to the `modules` parameter,
-Dagger 2 then fully generates an implementation of that contract.
+Android [`Application`][Android Application] accesses that graph via a
+well-defined set of roots. In Dagger 2, that set is defined by an interface with
+methods that have no arguments and return the desired type. By applying the
+[`@Component`][Component] annotation to such an interface and passing the
+[module][Module] types to the `modules` parameter, Dagger 2 then fully generates
+an implementation of that contract.
 
 ```java
 @Component(modules = DripCoffeeModule.class)
@@ -168,8 +163,8 @@ interface CoffeeShop {
 
 The implementation has the same name as the interface prefixed with `Dagger`.
 Obtain an instance by invoking the `builder()` method on that implementation and
-use the returned [builder](http://en.wikipedia.org/wiki/Builder_pattern) to set
-dependencies and `build()` a new instance.
+use the returned [builder][Builder Pattern] to set dependencies and `build()` a
+new instance.
 
 ```java
 CoffeeShop coffeeShop = DaggerCoffeeShop.builder()
@@ -177,11 +172,28 @@ CoffeeShop coffeeShop = DaggerCoffeeShop.builder()
     .build();
 ```
 
+_Note_: If your `@Component` is not a top-level type, the generated component's
+name will be include its enclosing types' names, joined with an underscore. For
+example, this code:
+
+```java
+class Foo {
+  static class Bar {
+    @Component
+    interface BazComponent {}
+  }
+}
+```
+
+would generate a component named `DaggerFoo_Bar_BazComponent`.
+
 Any module with an accessible default constructor can be elided as the builder
-will construct an instance automatically if none is set.  If all dependencies
-can be constructed in that manner, the generated implementation will also have a
-`create()` method that can be used to get a new instance without having to deal
-with the builder.
+will construct an instance automatically if none is set.  And for any module
+whose `@Provides` methods are all static, the implementation doesn't need an
+instance at all.  If all dependencies can be constructed without the user
+creating a dependency instance, then the generated implementation will also
+have a `create()` method that can be used to get a new instance without having
+to deal with the builder.
 
 ```java
 CoffeeShop coffeeShop = DaggerCoffeeShop.create();
@@ -216,14 +228,14 @@ Annotate an `@Provides` method or injectable class with
 all of its clients.
 
 ```java
-@Provides @Singleton Heater provideHeater() {
+@Provides @Singleton static Heater provideHeater() {
   return new ElectricHeater();
 }
 ```
 
 The `@Singleton` annotation on an injectable class also serves as
-[documentation](http://docs.oracle.com/javase/7/docs/api/java/lang/annotation/Documented.html). It
-reminds potential maintainers that this class may be shared by multiple threads.
+[documentation][Documented]. It reminds potential maintainers that this class
+may be shared by multiple threads.
 
 ```java
 @Singleton
@@ -298,12 +310,11 @@ class BigCoffeeMaker {
 
 ***Note:*** Injecting `Provider<T>` has the possibility of creating confusing
    code, and may be a design smell of mis-scoped or mis-structured objects in
-   your graph.  Often you will want to use a
-   [factory](http://en.wikipedia.org/wiki/Factory_(object-oriented_programming))
-   or a `Lazy<T>` or re-organize the lifetimes and structure of your code to be
-   able to just inject a `T`.  Injecting `Provider<T>` can, however, be a life
-   saver in some cases.  A common use is when you must use a legacy architecture
-   that doesn't line up with your object's natural lifetimes (e.g. servlets are
+   your graph.  Often you will want to use a [factory][Factory Pattern] or a
+   `Lazy<T>` or re-organize the lifetimes and structure of your code to be able
+   to just inject a `T`.  Injecting `Provider<T>` can, however, be a life saver
+   in some cases.  A common use is when you must use a legacy architecture that
+   doesn't line up with your object's natural lifetimes (e.g. servlets are
    singletons by design, but only are valid in the context of request-specfic
    data).
 
@@ -341,11 +352,11 @@ class ExpensiveCoffeeMaker {
 Supply qualified values by annotating the corresponding `@Provides` method.
 
 ```java
-@Provides @Named("hot plate") Heater provideHotPlateHeater() {
+@Provides @Named("hot plate") static Heater provideHotPlateHeater() {
   return new ElectricHeater(70);
 }
 
-@Provides @Named("water") Heater provideWaterHeater() {
+@Provides @Named("water") static Heater provideWaterHeater() {
   return new ElectricHeater(93);
 }
 ```
@@ -354,16 +365,14 @@ Dependencies may not have multiple qualifier annotations.
 
 ### Compile-time Validation
 
-The Dagger
-[annotation processor](http://docs.oracle.com/javase/6/docs/api/javax/annotation/processing/package-summary.html)
-is strict and will cause a compiler error if any bindings are invalid or
-incomplete. For example, this module is installed in a component, which is
-missing a binding for `Executor`:
+The Dagger [annotation processor][Annotation Processor] is strict and will cause
+a compiler error if any bindings are invalid or incomplete. For example, this
+module is installed in a component, which is missing a binding for `Executor`:
 
 ```java
 @Module
 class DripCoffeeModule {
-  @Provides Heater provideHeater(Executor executor) {
+  @Provides static Heater provideHeater(Executor executor) {
     return new CpuHeater(executor);
   }
 }
@@ -388,11 +397,15 @@ validation.
 ### Compile-time Code Generation
 
 Dagger's annotation processor may also generate source files with names like
-`CoffeeMaker$$Factory.java` or `CoffeeMaker$$MembersInjector.java`. These files
+`CoffeeMaker_Factory.java` or `CoffeeMaker_MembersInjector.java`. These files
 are Dagger implementation details. You shouldn't need to use them directly,
-though they can be handy when step-debugging through an injection.
+though they can be handy when step-debugging through an injection. The only
+generated types you should refer to in your code are the ones Prefixed with
+Dagger for your component.
 
 ## Using Dagger In Your Build
+
+### Gradle Users
 
 You will need to include the `dagger-{{site.dagger.version}}.jar` in your
 application's runtime.  In order to activate code generation you will need to
@@ -438,18 +451,30 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-[DI]: <http://en.wikipedia.org/wiki/Dependency_injection>
-
-[Component]: </api/latest/dagger/Component.html>
-[Lazy]: </api/latest/dagger/Lazy.html>
-[Module]: </api/latest/dagger/Module.html>
-[Provides]: </api/latest/dagger/Provides.html>
+<!-- References -->
 
 
+[Android Application]: http://developer.android.com/reference/android/app/Application.html
+[Annotation Processor]: http://docs.oracle.com/javase/6/docs/api/javax/annotation/processing/package-summary.html
+[Builder Pattern]: http://en.wikipedia.org/wiki/Builder_pattern
+[CoffeeMaker Example]: https://github.com/google/dagger/tree/master/examples/simple/src/main/java/coffee
+[Component]: /api/latest/dagger/Component.html
+[Dagger Talk Slides]: https://docs.google.com/presentation/d/1fby5VeGU9CN8zjw4lAb2QPPsKRxx6mSwCe9q7ECNSJQ/pub?start=false&loop=false&delayms=3000
+[DI]: http://en.wikipedia.org/wiki/Dependency_injection
+[Documented]: http://docs.oracle.com/javase/7/docs/api/java/lang/annotation/Documented.html
+[Factory Pattern]: https://en.wikipedia.org/wiki/Factory_(object-oriented_programming)
+[JSR 330]: https://jcp.org/en/jsr/detail?id=330
+[`javax.inject`]: http://docs.oracle.com/javaee/7/api/javax/inject/package-summary.html
+[`javax.inject.Inject`]: http://docs.oracle.com/javaee/7/api/javax/inject/Inject.html
+[Lazy]: /api/latest/dagger/Lazy.html
+[Module]: /api/latest/dagger/Module.html
+[Named]: http://docs.oracle.com/javaee/7/api/javax/inject/Named.html
+[Provider]: http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html
+[Provides]: /api/latest/dagger/Provides.htm
+[Qualifier]: http://docs.oracle.com/javaee/7/api/javax/inject/Qualifier.html
+[Scope]: http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html
+[Singleton]: http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html
+[+Gregory Kick]: https://google.com/+GregoryKick/
 
 
-[Named]: <http://docs.oracle.com/javaee/7/api/javax/inject/Named.html>
-[Provider]: <http://docs.oracle.com/javaee/7/api/javax/inject/Provider.html>
-[Qualifier]: <http://docs.oracle.com/javaee/7/api/javax/inject/Qualifier.html>
-[Scope]: <http://docs.oracle.com/javaee/7/api/javax/inject/Scope.html>
-[Singleton]: <http://docs.oracle.com/javaee/7/api/javax/inject/Singleton.html>
+

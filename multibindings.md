@@ -1,5 +1,7 @@
-# Multibindings
-
+---
+layout: default
+title: Multibindings
+---
 
 Dagger allows you to bind several objects into a collection even when the
 objects are bound in different modules using mutlbindings. Dagger assembles the
@@ -11,33 +13,31 @@ where several modules can contribute individual plugin interface implementations
 so that a central class can use the entire set of plugins. Or you could have
 several modules contribute individual service providers to a map, keyed by name.
 
-[TOC]
 
 ## Set multibindings {#set-multibindings}
 
 In order to contribute one element to an injectable multibound set, add a method
 to a module that returns an element and is annotated with
-[`@Provides(type = SET)`][PTS]:
+[`@Provides(type = SET)`]:
 
 ```java
 @Module
 class MyModuleA {
   @Provides(type = SET)
-  String provideOneString(DepA depA, DepB depB) {
+  static String provideOneString(DepA depA, DepB depB) {
     return "ABC";
   }
 }
 ```
 
 You can also contribute several elements at one time by adding a module method
-that returns a subset and is annotated with
-[`@Provides(type = SET_VALUES)`][PTSV]:
+that returns a subset and is annotated with [`@Provides(type = SET_VALUES)`]:
 
 ```java
 @Module
 class MyModuleB {
   @Provides(type = SET_VALUES)
-  Set<String> provideSomeStrings(DepA depA, DepB depB) {
+  static Set<String> provideSomeStrings(DepA depA, DepB depB) {
     return new HashSet<Foo>(Arrays.asList("DEF", "GHI"));
   }
 }
@@ -51,7 +51,7 @@ depending on that set is an error. If you want to allow an empty set, then add a
 @Module
 class MyEmptySetModule {
   @Provides(type = SET_VALUES)
-  Set<Foo> primeEmptyFooSet() {
+  static Set<Foo> primeEmptyFooSet() {
     return Collections.emptySet();
   }
 }
@@ -95,7 +95,7 @@ with the qualifier:
 class MyModuleC {
   @Provides(type = SET)
   @MyQualifier
-  Foo provideOneFoo(DepA depA, DepB depB) {
+  static Foo provideOneFoo(DepA depA, DepB depB) {
     return new Foo(depA, depB);
   }
 }
@@ -103,7 +103,7 @@ class MyModuleC {
 @Module
 class MyModuleD {
   @Provides
-  FooSetUser provideFooSetUser(@MyQualifier Set<Foo> foos) { … }
+  static FooSetUser provideFooSetUser(@MyQualifier Set<Foo> foos) { … }
 }
 ```
 
@@ -113,10 +113,10 @@ Dagger lets you use multibindings to contribute entries to an injectable map as
 long as the map keys are known at compile time.
 
 To contribute an entry to a multibound map, add a method to a module that
-returns the value and is annotated with [`@Provides(type = MAP)`][PTM] and with
+returns the value and is annotated with [`@Provides(type = MAP)`] and with
 another custom annotation that specifies the map key for that entry. To
-contribute an entry to a qualified multibound map, annotate each
-`@Provides(type = MAP)` method with the qualifier.
+contribute an entry to a qualified multibound map, annotate each `@Provides(type
+= MAP)` method with the qualifier.
 
 Then you can inject either the map itself (`Map<K, V>`) or a map containing
 value providers (`Map<K, Provider<V>>`). The latter is useful when you don't
@@ -126,9 +126,42 @@ value each time you query the map.
 
 ### Simple map keys
 
-For maps with keys that are strings, enums, classes, or boxed primitives, write
-an annotation type with one member whose type is the (unboxed if necessary) map
-key type, and annotate it with [`@MapKey`][MapKey]:
+For maps with keys that are strings, `Class<?>`, or boxed primitives, use one of
+the standard annotations in [`dagger.mapkeys`]:
+
+```java
+@Module
+class MyModule {
+  @Provides(type = MAP)
+  @StringKey("foo")
+  static Long provideFooValue() {
+    return 100L;
+  }
+
+  @Provides(type = MAP)
+  @ClassKey(Thing.class)
+  static String provideThingValue() {
+    return "value for Thing";
+  }
+}
+
+@Component(modules = MyModule.class)
+interface MyComponent {
+  Map<String, Long> longsByString();
+  Map<Class<?>, String> stringsByClass();
+}
+
+@Test void testMyComponent() {
+  MyComponent myComponent = DaggerMyComponent.create();
+  assertThat(myComponent.longsByString.get("foo")).isEqualTo(100L);
+  assertThat(myComponent.stringsByClass.get(Thing.class))
+      .isEqualTo("value for Thing");
+}
+```
+
+For maps with keys that are enums or a more specifically parameterized class,
+write an annotation type with one member whose type is the map key type, and
+annotate it with [`@MapKey`]:
 
 ```java
 enum MyEnum {
@@ -141,11 +174,6 @@ enum MyEnum {
 }
 
 @MapKey
-@interface MyLongKey {
-  long value();
-}
-
-@MapKey
 @interface MyNumberClassKey {
   Class<? extends Number> value();
 }
@@ -154,19 +182,13 @@ enum MyEnum {
 class MyModule {
   @Provides(type = MAP)
   @MyEnumKey(MyEnum.ABC)
-  String provideABCValue() {
+  static String provideABCValue() {
     return "value for ABC";
   }
 
   @Provides(type = MAP)
-  @MyLongKey(100L)
-  String provide100Value() {
-    return "value for 100";
-  }
-
-  @Provides(type = MAP)
   @MyNumberClassKey(BigDecimal.class)
-  String provideBigDecimalValue() {
+  static String provideBigDecimalValue() {
     return "value for BigDecimal";
   }
 }
@@ -174,15 +196,13 @@ class MyModule {
 @Component(modules = MyModule.class)
 interface MyComponent {
   Map<MyEnum, String> myEnumStringMap();
-  Map<Long, String> longStringMap();
-  Map<Class<? extends Number>, String> numberClassStringMap();
+  Map<Class<? extends Number>, String> stringsByNumberClass();
 }
 
 @Test void testMyComponent() {
   MyComponent myComponent = DaggerMyComponent.create();
-  assertThat(myEnumStringMap.get(MyEnum.ABC)).isEqualTo("value for ABC");
-  assertThat(longStringMap.get(100L)).isEqualTo("value for 100");
-  assertThat(numberClassStringMap.get(BigDecimal.class))
+  assertThat(myComponent.myEnumStringMap().get(MyEnum.ABC)).isEqualTo("value for ABC");
+  assertThat(myComponent.stringsByNumberClass.get(BigDecimal.class))
       .isEqualTo("value for BigDecimal");
 }
 ```
@@ -209,7 +229,7 @@ well.
 class MyModule {
   @Provides(type = MAP)
   @MyKey(name = "abc", implementingClass = Abc.class, thresholds = {1, 5, 10})
-  String provideAbc1510Value() {
+  static String provideAbc1510Value() {
     return "foo";
   }
 }
@@ -226,7 +246,7 @@ If your map uses complex keys, then you may need to create an instance of your
 `@MapKey` annotation at run-time to pass to the map's `get(Object)` method. The
 easiest way to do that is to use the `@AutoAnnotation` annotation to create a
 static method that instantiates your annotation. See
-`@AutoAnnotation`'s [documentation][AutoAnnotation] for more details.
+`@AutoAnnotation`'s [documentation][`@AutoAnnotation`] for more details.
 
 ```java
 class MyComponentTest {
@@ -256,14 +276,14 @@ transform into a non-multibound map.
 @Module
 class MyModule {
   @Provides(type = SET)
-  Map.Entry<Foo, Bar> entryOne(…) {
+  static Map.Entry<Foo, Bar> entryOne(…) {
     Foo key = …;
     Bar value = …;
     return new SimpleImmutableEntry(key, value);
   }
 
   @Provides(type = SET)
-  Map.Entry<Foo, Bar> entryTwo(…) {
+  static Map.Entry<Foo, Bar> entryTwo(…) {
     Foo key = …;
     Bar value = …;
     return new SimpleImmutableEntry(key, value);
@@ -273,7 +293,7 @@ class MyModule {
 @Module
 class MyMapModule {
   @Provides
-  Map<Foo, Bar> fooBarMap(Set<Map.Entry<Foo, Bar>> entries) {
+  static Map<Foo, Bar> fooBarMap(Set<Map.Entry<Foo, Bar>> entries) {
     Map<Foo, Bar> fooBarMap = new LinkedHashMap<>(entries.size());
     for (Map.Entry<Foo, Bar> entry : entries) {
       fooBarMap.put(entry.getKey(), entry.getValue());
@@ -292,7 +312,8 @@ your non-multibound map can have `Provider` values.
 @Module
 class MyModule {
   @Provides(type = SET)
-  Map.Entry<Foo, Provider<Bar>> entry(Provider<BarSubclass> barSubclassProvider) {
+  static Map.Entry<Foo, Provider<Bar>> entry(
+      Provider<BarSubclass> barSubclassProvider) {
     Foo key = …;
     return new SimpleImmutableEntry(key, barSubclassProvider);
   }
@@ -301,7 +322,8 @@ class MyModule {
 @Module
 class MyProviderMapModule {
   @Provides
-  Map<Foo, Provider<Bar>> fooBarProviderMap(Set<Map.Entry<Foo, Provider<Bar>>> entries) {
+  static Map<Foo, Provider<Bar>> fooBarProviderMap(
+      Set<Map.Entry<Foo, Provider<Bar>>> entries) {
     return …;
   }
 }
@@ -333,24 +355,24 @@ interface ParentComponent {
 @Module
 class ParentModule {
   @Provides(type = SET)
-  String string1() {
+  static String string1() {
     "parent string 1";
   }
 
   @Provides(type = SET)
-  String string2() {
+  static String string2() {
     "parent string 2";
   }
 
   @Provides(type = MAP)
   @StringKey("a")
-  String stringA() {
+  static String stringA() {
     "parent string A";
   }
 
   @Provides(type = MAP)
   @StringKey("b")
-  String stringB() {
+  static String stringB() {
     "parent string B";
   }
 }
@@ -364,24 +386,24 @@ interface ChildComponent {
 @Module
 class ChildModule {
   @Provides(type = SET)
-  String string3() {
+  static String string3() {
     "child string 3";
   }
 
   @Provides(type = SET)
-  String string4() {
+  static String string4() {
     "child string 4";
   }
 
   @Provides(type = MAP)
   @StringKey("c")
-  String stringC() {
+  static String stringC() {
     "child string C";
   }
 
   @Provides(type = MAP)
   @StringKey("d")
-  String stringD() {
+  static String stringD() {
     "child string D";
   }
 }
@@ -403,15 +425,16 @@ class ChildModule {
 <!-- references & footnotes -->
 
 [^AutoAnnotation]:
-    You can use [`@AutoAnnotation`][AutoAnnotation] to create annotation
-    instances to pass to the map's `get(Object)` method.
+    You can use [`@AutoAnnotation`] to create annotation instances to pass to
+    the map's `get(Object)` method.
 
-[PTS]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#SET
 
-[PTS]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#SET_VALUES
+[`@AutoAnnotation`]: https://github.com/google/auto/blob/master/value/src/main/java/com/google/auto/value/AutoAnnotation.java
+[`dagger.mapkeys`]: http://google.github.io/dagger/api/latest/dagger/mapkeys/package-summary.html
+[`@MapKey`]: http://google.github.io/dagger/api/latest/dagger/MapKey.html
+[`@Provides(type = MAP)`]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#MAP
+[`@Provides(type = SET)`]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#SET
+[`@Provides(type = SET_VALUES)`]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#SET_VALUES
 
-[PTM]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#MAP
 
-[AutoAnnotation]: https://github.com/google/auto/blob/master/value/src/main/java/com/google/auto/value/AutoAnnotation.java
 
-[MapKey]: http://google.github.io/dagger/api/latest/dagger/MapKey.html
