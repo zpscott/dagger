@@ -251,7 +251,7 @@ producer methods; its methods correspond to various places in a producer's
 lifecycle.
 
 To install a `ProducerMonitor`, contribute into a set binding of
-[ProductionComponentMonitor.Factory][ProductionComponentMonitorFactory]. For
+[`ProductionComponentMonitor.Factory`][ProductionComponentMonitorFactory]. For
 example:
 
 ```java
