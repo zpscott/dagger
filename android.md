@@ -19,7 +19,7 @@ contrary to those applied to other Java code.  Even much of the advice in
 [Effective Java][effective-java] is considered inappropriate for Android.
 
 In order to achieve the goals of both idiomatic and portable code, Dagger
-relies on [ProGuard] to post-process the compiled bytecode.  The allows Dagger
+relies on [ProGuard] to post-process the compiled bytecode.  This allows Dagger
 to emit source that looks and feels natural on both the server and Android,
 while using the different toolchains to produce bytecode that executes
 efficiently in both environements.  Moreover, Dagger has an explicit goal to
