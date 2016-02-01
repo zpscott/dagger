@@ -37,4 +37,3 @@ plagued reflection-based solutions. More details can be found in
 [stack-overflow]: http://stackoverflow.com/questions/tagged/dagger-2
 [+Gregory Kick]: https://google.com/+GregoryKick/
 
->>>>>>> f944c5e... Fix github-pages landing page to show link to updated users-guide
