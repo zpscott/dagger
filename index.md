@@ -15,12 +15,12 @@ plagued reflection-based solutions. More details can be found in
 
 ## Where are the docs?
 
-* [User documentation](users-guide.md)
+* [User documentation](users-guide)
 * [Dagger API @ HEAD][api-docs]
 
 ## Where is the code?
 
-* https://github.com/google/dagger
+* <https://github.com/google/dagger>
 
 ## Have a question?
 
