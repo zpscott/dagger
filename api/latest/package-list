@@ -1,7 +1,6 @@
 dagger
 dagger.internal
 dagger.internal.codegen
-dagger.internal.codegen.writer
 dagger.mapkeys
 dagger.producers
 dagger.producers.internal
