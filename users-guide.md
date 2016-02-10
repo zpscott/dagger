@@ -235,7 +235,7 @@ used to generate a well-formed component:
 *   The [component provision methods][Component#provision-methods] of the
     [component dependencies][Component#dependencies]
 *   The component itself
-*   [Builders][Subcomponent.Builder] for any included
+*   Unqualified [builders][Subcomponent.Builder] for any included
     [subcomponent][Subcomponent]
 *   `Provider` or `Lazy` wrappers for any of the above bindings
 *   A `MembersInjector` for any type
