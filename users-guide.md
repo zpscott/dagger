@@ -231,7 +231,7 @@ used to generate a well-formed component:
 *   Those declared by `@Provides` methods within a `@Module` referenced directly
     by `@Component.modules` or transitively via `@Module.includes`
 *   Any type with an `@Inject` constructor that is unscoped or has a `@Scope`
-    annotation that matches the component's
+    annotation that matches one of the component's scopes
 *   The [component provision methods][Component#provision-methods] of the
     [component dependencies][Component#dependencies]
 *   The component itself
@@ -278,6 +278,10 @@ interface CoffeeShop {
   CoffeeMaker maker();
 }
 ```
+
+Components may have multiple scope annotations applied. This declares that they
+are all aliases to the same scope, and so that component may include scoped
+bindings with any of the scopes it declares.
 
 ### Lazy injections
 
