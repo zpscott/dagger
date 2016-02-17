@@ -41,6 +41,15 @@ final class UserResponseModule {
     return template.render(data);
   }
 }
+
+@Module
+final class ExecutorModule {
+  @Provides
+  @Production
+  static Executor executor() {
+    return Executors.newCachedThreadPool();
+  }
+}
 ```
 
 In this example, the computation we’re describing here says:
@@ -52,6 +61,12 @@ In this example, the computation we’re describing here says:
 `UserHtmlTemplate` come from; we’re assuming that the Dagger module `UserModule`
 provides those types.)
 
+Each of these producer methods will be scheduled on the thread pool that we
+specify via the binding to `@Production Executor`. Note that even though the
+provides method that specifies the executor is unscoped, the production
+component will only ever get one instance from the provider; so in this case,
+only one thread pool will be created.
+
 To build this graph, we use a `ProductionComponent`:
 
 ```java
@@ -62,9 +77,7 @@ interface UserResponseComponent {
 
 // ...
 
-UserResponseComponent component = Dagger_UserResponseComponent.builder()
-    .executor(executor)
-    .build();
+UserResponseComponent component = Dagger_UserResponseComponent.create();
 
 ListenableFuture<Html> htmlFuture = component.html();
 ```
