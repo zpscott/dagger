@@ -290,7 +290,7 @@ individual monitors for each producer method.
 
 ### Timing, Logging and Debugging
 
-==As of January 2016, not implemented yet==
+**As of March 2016, not implemented yet**
 
 Since graphs are constructed at compile-time, the graph will be able to be
 viewed immediately after compiling, likely via writing its structure to json

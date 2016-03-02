@@ -271,11 +271,9 @@ the parent component. In the example above, `FooRequestComponent` and
 into one `@RequestScope` component with all their modules, but you might have
 some conflicting bindings.
 
-> TODO(dpb): Explore this idea further.
+<!-- TODO(dpb): Explore this idea further. -->
 
-## Subcomponents vs. dependent components
-
-> TODO(dpb)
+<!-- TODO(dpb): ## Subcomponents vs. dependent components -->
 
 ## Details
 

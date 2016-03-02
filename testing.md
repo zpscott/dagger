@@ -41,11 +41,11 @@ public class ThingDoerTest {
 ## Replace bindings for functional/integration/end-to-end testing
 
 Functional/integration/end-to-end tests typically use the production
-application, but substitute fakes[^fakes-not-mocks] for persistence, backends,
-and auth systems, leaving the rest of the application to operate normally. That
-approach lends itself to having one (or maybe a small finite number) of test
-configurations, where the test configuration replaces some of the bindings in
-the prod configuration.
+application, but substitute [fakes] (don’t use mocks in large functional tests!)
+for persistence, backends, and auth systems, leaving the rest of the
+application to operate normally. That approach lends itself to having one (or
+maybe a small finite number) of test configurations, where the test
+configuration replaces some of the bindings in the prod configuration.
 
 ### Option 1: Override bindings by subclassing modules
 
@@ -95,15 +95,13 @@ But there are limitations to this approach:
 
     *   Similarly, the overriding module cannot add bindings to the graph,
         including new [multibinding](multibindings.md)
-        contributions.[^new-multibindings?] Any new `@Provides` methods in the
-        subclass are silently ignored by Dagger. Practically, this means that
-        your fakes cannot take advantage of dependency injection.
+        contributions (although you can still override a `SET_VALUES` method to
+        return a different set). Any new `@Provides` methods in the subclass are
+        silently ignored by Dagger. Practically, this means that your fakes
+        cannot take advantage of dependency injection.
 
 *   `@Provides` methods that are overridable in this way cannot be static, so
     their module instances cannot be [elided][elide-static-module-instances].
-
-[^new-multibindings?]:
-    You can still override a `SET_VALUES` method to return a different set.
 
 <a name="separate-component-configurations"></a>
 ### Option 2: Separate component configurations
@@ -142,23 +140,22 @@ if necessary.
 
 But how do you design your modules to make this pattern easy?
 
-[^fakes-not-mocks]:
-    Don’t use mocks in large functional tests! [More explanation TODO.]
-
 ## Organize modules for testability
 
 Module classes are a kind of [utility class]: a collection of
-independent[^independent?] `@Provides` methods, each of which may be used by the
-injector to provide some type used by the application. So how do you decide
-which `@Provides` methods should go together into one module class?
+independent `@Provides` methods, each of which may be used by the
+injector to provide some type used by the application.
 
-[^independent?]:
-    Although several `@Provides` methods may be related in that one depends on
-    a type provided by another, they typically do not explicitly call each
-    other or rely on the same mutable state. Some `@Provides` methods do refer
-    to the same instance field, in which case they are not in fact independent.
-    The advice given here treats `@Provides` methods as utility methods anyway
-    because it leads to modules that can be readily substituted for testing.
+<!-- TODO(dpb): Reformat as a footnote once Github supports them. -->
+(Although several `@Provides` methods may be related in that one depends on
+a type provided by another, they typically do not explicitly call each
+other or rely on the same mutable state. Some `@Provides` methods do refer
+to the same instance field, in which case they are not in fact independent.
+The advice given here treats `@Provides` methods as utility methods anyway
+because it leads to modules that can be readily substituted for testing.)
+
+So how do you decide which `@Provides` methods should go together into one
+module class?
 
 One way to think about it is to classify bindings into *published* bindings and
 *internal* bindings, and then to further decide which of the published bindings
@@ -252,6 +249,7 @@ configuration the fake modules, as described
 <!-- Reference links -->
 
 [cohesive]: https://en.wikipedia.org/wiki/Cohesion_(computer_science)
+[fakes]: http://googletesting.blogspot.com/2013/07/testing-on-toilet-know-your-test-doubles.html
 [single responsibility principle]: https://en.wikipedia.org/wiki/Single_responsibility_principle
 [unit testing]: https://en.wikipedia.org/wiki/Unit_testing
 [utility class]: https://en.wikipedia.org/wiki/Utility_class

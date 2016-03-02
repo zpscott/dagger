@@ -14,7 +14,8 @@ so that a central class can use the entire set of plugins. Or you could have
 several modules contribute individual service providers to a map, keyed by name.
 
 
-## Set multibindings {#set-multibindings}
+<a name=set-multibindings></a>
+## Set multibindings
 
 In order to contribute one element to an injectable multibound set, add a method
 to a module that returns an element and is annotated with
@@ -92,8 +93,8 @@ class MyModuleD {
   static FooSetUser provideFooSetUser(@MyQualifier Set<Foo> foos) { … }
 }
 ```
-
-## Map multibindings {#map-multibindings}
+<a name=map-multibindings></a>
+## Map multibindings
 
 Dagger lets you use multibindings to contribute entries to an injectable map as
 long as the map keys are known at compile time.
@@ -322,22 +323,8 @@ You can declare that a multibound set or map is bound by nesting a
 the sets or maps you want to declare.
 
 You do not have to use [`@Multibindings`] for sets or maps that have at least
-one contribution, but you do have to declare them if they may be empty.[^empty-set-values]
-
-[^empty-set-values]:
-    For empty sets only, as an alternative, you can add a [`@Provides(type =
-    SET_VALUES)`] method that returns an empty set:
-
-    ```java
-    @Module
-    class MyEmptySetModule {
-      @Provides(type = SET_VALUES)
-      static Set<Foo> primeEmptyFooSet() {
-        return Collections.emptySet();
-      }
-    }
-    ```
-
+one contribution, but you do have to declare them if they may be empty.
+    
 ```java
 @Module
 class MyModule {
@@ -356,6 +343,22 @@ are used to declare multibindings. The names of the interface and its methods
 are ignored. A given set or map multibinding can be declared any number of times
 without error. Dagger never implements the interface or calls any of its
 methods.
+
+<!-- TODO(dpb): Render as footnote once Github supports them. -->
+### Alternative: `SET_VALUES` returning an empty set
+
+For empty sets only, as an alternative, you can add a [`@Provides(type =
+SET_VALUES)`] method that returns an empty set:
+
+```java
+@Module
+class MyEmptySetModule {
+  @Provides(type = SET_VALUES)
+  static Set<Foo> primeEmptyFooSet() {
+    return Collections.emptySet();
+  }
+}
+```
 
 ## Inherited subcomponent multibindings
 
@@ -451,10 +454,6 @@ class ChildModule {
 ```
 
 <!-- references & footnotes -->
-
-[^AutoAnnotation]:
-    You can use [`@AutoAnnotation`] to create annotation instances to pass to
-    the map's `get(Object)` method.
 
 
 [`@AutoAnnotation`]: https://github.com/google/auto/blob/master/value/src/main/java/com/google/auto/value/AutoAnnotation.java
