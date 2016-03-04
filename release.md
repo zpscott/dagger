@@ -110,7 +110,7 @@ incremented.
 Update the versions of the project, like so (changing version numbers):
 
 ```shell
-mvn version:set version:commit -DnewVersion=2.1
+mvn versions:set versions:commit -DnewVersion=2.1
 git commit
 ```
 
