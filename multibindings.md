@@ -140,8 +140,8 @@ interface MyComponent {
 
 @Test void testMyComponent() {
   MyComponent myComponent = DaggerMyComponent.create();
-  assertThat(myComponent.longsByString.get("foo")).isEqualTo(100L);
-  assertThat(myComponent.stringsByClass.get(Thing.class))
+  assertThat(myComponent.longsByString().get("foo")).isEqualTo(100L);
+  assertThat(myComponent.stringsByClass().get(Thing.class))
       .isEqualTo("value for Thing");
 }
 ```
