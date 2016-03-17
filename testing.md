@@ -82,7 +82,7 @@ MyApplicationComponent testingComponent = DaggerMyApplicationComponent.builder()
     .build();
 ```
 
-<a name=do-not-override></a>
+<a name="do-not-override"></a>
 But there are limitations to this approach:
 
 *   Using a module subclass cannot change the static shape of the binding graph:
