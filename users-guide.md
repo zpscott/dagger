@@ -283,7 +283,6 @@ Components may have multiple scope annotations applied. This declares that they
 are all aliases to the same scope, and so that component may include scoped
 bindings with any of the scopes it declares.
 
-<a name="reusable-scope"></a>
 ### Reusable scope
 
 Sometimes you want to limit the number of times an `@Inject`-constructed class
