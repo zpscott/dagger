@@ -157,10 +157,10 @@ in [ordinary Dagger](multibindings.md). For example:
 ```java
 @ProducerModule
 final class UserDataModule {
-  @Produces(type = SET) static ListenableFuture<Data> standardData(…) { … }
-  @Produces(type = SET) static ListenableFuture<Data> extraData(…) { … }
-  @Produces(type = SET) static Data synchronousData(…) { … }
-  @Produces(type = SET_VALUES) static Set<ListenableFuture<Data>> rest(…) { … }
+  @Produces @IntoSet static ListenableFuture<Data> standardData(…) { … }
+  @Produces @IntoSet static ListenableFuture<Data> extraData(…) { … }
+  @Produces @IntoSet static Data synchronousData(…) { … }
+  @Produces @ElementsIntoSet static Set<ListenableFuture<Data>> rest(…) { … }
 
   @Produces static … collect(Set<Data> data) { … }
 }
@@ -181,10 +181,10 @@ Map multibindings are similar to set multibindings:
 
 @ProducerModule
 final class DispatchModule {
-  @Produces(type = MAP) @DispatchPath("/user")
+  @Produces @IntoMap @DispatchPath("/user")
   static ListenableFuture<Html> dispatchUser(…) { … }
 
-  @Produces(type = MAP) @DispatchPath("/settings")
+  @Produces @IntoMap @DispatchPath("/settings")
   static ListenableFuture<Html> dispatchSettings(…) { … }
 
   @Produces
@@ -280,7 +280,7 @@ example:
 ```java
 @Module
 final class MyMonitorModule {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static ProductionComponentMonitor.Factory provideMonitorFactory(
       MyProductionComponentMonitor.Factory monitorFactory) {
     return monitorFactory;

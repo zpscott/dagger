@@ -296,22 +296,22 @@ interface Parent {
 
 @Module
 class ParentModule {
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("one") static int one() {
     return 1;
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("two") static int two() {
     return 2;
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String a() {
     return "a"
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String b() {
     return "b"
   }
@@ -325,22 +325,22 @@ interface Child {
 
 @Module
 class ChildModule {
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("three") static int three() {
     return 3;
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("four") static int four() {
     return 4;
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String c() {
     return "c"
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String d() {
     return "d"
   }
