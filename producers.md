@@ -157,10 +157,10 @@ in [ordinary Dagger](multibindings.md). For example:
 ```java
 @ProducerModule
 final class UserDataModule {
-  @Produces(type = SET) static ListenableFuture<Data> standardData(…) { … }
-  @Produces(type = SET) static ListenableFuture<Data> extraData(…) { … }
-  @Produces(type = SET) static Data synchronousData(…) { … }
-  @Produces(type = SET_VALUES) static Set<ListenableFuture<Data>> rest(…) { … }
+  @Produces @IntoSet static ListenableFuture<Data> standardData(…) { … }
+  @Produces @IntoSet static ListenableFuture<Data> extraData(…) { … }
+  @Produces @IntoSet static Data synchronousData(…) { … }
+  @Produces @ElementsIntoSet static Set<ListenableFuture<Data>> rest(…) { … }
 
   @Produces static … collect(Set<Data> data) { … }
 }
@@ -181,10 +181,10 @@ Map multibindings are similar to set multibindings:
 
 @ProducerModule
 final class DispatchModule {
-  @Produces(type = MAP) @DispatchPath("/user")
+  @Produces @IntoMap @DispatchPath("/user")
   static ListenableFuture<Html> dispatchUser(…) { … }
 
-  @Produces(type = MAP) @DispatchPath("/settings")
+  @Produces @IntoMap @DispatchPath("/settings")
   static ListenableFuture<Html> dispatchSettings(…) { … }
 
   @Produces
@@ -211,28 +211,15 @@ is the same as the lifetime of its enclosing component instance.
 scoped to the production component that they're bound in. Production components
 may also *additionally* have other scopes, like ordinary components can.
 
-## Executor
-
-The primary way to supply the executor is to bind `@Production Executor` in a
+To supply the executor, to bind `@Production Executor` in a
 `ProductionComponent` or `ProductionSubcomponent`. This binding will be
 implicitly scoped `@ProductionScope`. For subcomponents, the executor may be
 bound in any parent component, and its binding will be inherited in the
 subcomponent (like all bindings are).
 
-**This following alternative is deprecated and will be removed soon!**
-
-Alternatively, for a `ProductionComponent`, the executor may be supplied on the
-builder directly:
-
-- If a `ProductionComponent.Builder` is explicitly written, it may have a method
-that takes an `Executor`.
-- Otherwise, the generated builder will have a method `executor(Executor)`.
-
-In this case, if `@ProductionExecutor Executor` is bound, compilation will fail
-with a duplicate binding error.
-
-Note that this means that a `ProductionComponent` that does not specify its
-builder must use this alternative method for supplying the executor.
+The executor binding will only be executed once per component instance, even if
+it is not scoped to the component; that is, it will be implicitly scoped
+`@ProductionScope`.
 
 ## Component dependencies
 
@@ -293,7 +280,7 @@ example:
 ```java
 @Module
 final class MyMonitorModule {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static ProductionComponentMonitor.Factory provideMonitorFactory(
       MyProductionComponentMonitor.Factory monitorFactory) {
     return monitorFactory;

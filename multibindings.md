@@ -14,17 +14,15 @@ so that a central class can use the entire set of plugins. Or you could have
 several modules contribute individual service providers to a map, keyed by name.
 
 
-<a name=set-multibindings></a>
 ## Set multibindings
 
-In order to contribute one element to an injectable multibound set, add a method
-to a module that returns an element and is annotated with
-[`@Provides(type = SET)`]:
+In order to contribute one element to an injectable multibound set, add an
+[`@IntoSet`] annotation to your module method:
 
 ```java
 @Module
 class MyModuleA {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String provideOneString(DepA depA, DepB depB) {
     return "ABC";
   }
@@ -32,12 +30,12 @@ class MyModuleA {
 ```
 
 You can also contribute several elements at one time by adding a module method
-that returns a subset and is annotated with [`@Provides(type = SET_VALUES)`]:
+that returns a subset and is annotated with [`@ElementsIntoSet`]:
 
 ```java
 @Module
 class MyModuleB {
-  @Provides(type = SET_VALUES)
+  @Provides @ElementsIntoSet
   static Set<String> provideSomeStrings(DepA depA, DepB depB) {
     return new HashSet<String>(Arrays.asList("DEF", "GHI"));
   }
@@ -80,7 +78,7 @@ with the qualifier:
 ```java
 @Module
 class MyModuleC {
-  @Provides(type = SET)
+  @Provides @IntoSet
   @MyQualifier
   static Foo provideOneFoo(DepA depA, DepB depB) {
     return new Foo(depA, depB);
@@ -93,17 +91,17 @@ class MyModuleD {
   static FooSetUser provideFooSetUser(@MyQualifier Set<Foo> foos) { … }
 }
 ```
-<a name=map-multibindings></a>
+
 ## Map multibindings
 
 Dagger lets you use multibindings to contribute entries to an injectable map as
 long as the map keys are known at compile time.
 
 To contribute an entry to a multibound map, add a method to a module that
-returns the value and is annotated with [`@Provides(type = MAP)`] and with
+returns the value and is annotated with [`@IntoMap`] and with
 another custom annotation that specifies the map key for that entry. To
-contribute an entry to a qualified multibound map, annotate each `@Provides(type
-= MAP)` method with the qualifier.
+contribute an entry to a qualified multibound map, annotate each `@IntoMap`
+method with the qualifier.
 
 Then you can inject either the map itself (`Map<K, V>`) or a map containing
 value providers (`Map<K, Provider<V>>`). The latter is useful when you don't
@@ -119,13 +117,13 @@ the standard annotations in [`dagger.mapkeys`]:
 ```java
 @Module
 class MyModule {
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("foo")
   static Long provideFooValue() {
     return 100L;
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @ClassKey(Thing.class)
   static String provideThingValue() {
     return "value for Thing";
@@ -167,13 +165,13 @@ enum MyEnum {
 
 @Module
 class MyModule {
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @MyEnumKey(MyEnum.ABC)
   static String provideABCValue() {
     return "value for ABC";
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @MyNumberClassKey(BigDecimal.class)
   static String provideBigDecimalValue() {
     return "value for BigDecimal";
@@ -214,7 +212,7 @@ well.
 
 @Module
 class MyModule {
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @MyKey(name = "abc", implementingClass = Abc.class, thresholds = {1, 5, 10})
   static String provideAbc1510Value() {
     return "foo";
@@ -262,14 +260,14 @@ transform into a non-multibound map.
 ```java
 @Module
 class MyModule {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static Map.Entry<Foo, Bar> entryOne(…) {
     Foo key = …;
     Bar value = …;
     return new SimpleImmutableEntry(key, value);
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static Map.Entry<Foo, Bar> entryTwo(…) {
     Foo key = …;
     Bar value = …;
@@ -298,7 +296,7 @@ your non-multibound map can have `Provider` values.
 ```java
 @Module
 class MyModule {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static Map.Entry<Foo, Provider<Bar>> entry(
       Provider<BarSubclass> barSubclassProvider) {
     Foo key = …;
@@ -345,15 +343,16 @@ without error. Dagger never implements the interface or calls any of its
 methods.
 
 <!-- TODO(dpb): Render as footnote once Github supports them. -->
-### Alternative: `SET_VALUES` returning an empty set
 
-For empty sets only, as an alternative, you can add a [`@Provides(type =
-SET_VALUES)`] method that returns an empty set:
+### Alternative: `@ElementsIntoSet` returning an empty set
+
+For empty sets only, as an alternative, you can add a [`@ElementsIntoSet`]
+method that returns an empty set:
 
 ```java
 @Module
 class MyEmptySetModule {
-  @Provides(type = SET_VALUES)
+  @Provides @ElementsIntoSet
   static Set<Foo> primeEmptyFooSet() {
     return Collections.emptySet();
   }
@@ -385,23 +384,23 @@ interface ParentComponent {
 
 @Module
 class ParentModule {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String string1() {
     "parent string 1";
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String string2() {
     "parent string 2";
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("a")
   static String stringA() {
     "parent string A";
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("b")
   static String stringB() {
     "parent string B";
@@ -416,23 +415,23 @@ interface ChildComponent {
 
 @Module
 class ChildModule {
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String string3() {
     "child string 3";
   }
 
-  @Provides(type = SET)
+  @Provides @IntoSet
   static String string4() {
     "child string 4";
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("c")
   static String stringC() {
     "child string C";
   }
 
-  @Provides(type = MAP)
+  @Provides @IntoMap
   @StringKey("d")
   static String stringD() {
     "child string D";
@@ -458,11 +457,11 @@ class ChildModule {
 
 [`@AutoAnnotation`]: https://github.com/google/auto/blob/master/value/src/main/java/com/google/auto/value/AutoAnnotation.java
 [`dagger.mapkeys`]: http://google.github.io/dagger/api/latest/dagger/mapkeys/package-summary.html
+[`@ElementsIntoSet`]: http://google.github.io/dagger/api/latest/dagger/multibindings/ElementsIntoSet.html
+[`@IntoMap`]: http://google.github.io/dagger/api/latest/dagger/multibindings/IntoMap.html
+[`@IntoSet`]: http://google.github.io/dagger/api/latest/dagger/multibindings/IntoSet.html
 [`@MapKey`]: http://google.github.io/dagger/api/latest/dagger/MapKey.html
 [`@Multibindings`]: http://google.github.io/dagger/api/latest/dagger/Multibindings.html
-[`@Provides(type = MAP)`]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#MAP
-[`@Provides(type = SET)`]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#SET
-[`@Provides(type = SET_VALUES)`]: http://google.github.io/dagger/api/latest/dagger/Provides.Type.html#SET_VALUES
 
 
 

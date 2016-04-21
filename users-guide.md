@@ -238,6 +238,8 @@ used to generate a well-formed component:
 *   Unqualified [builders][Subcomponent.Builder] for any included
     [subcomponent][Subcomponent]
 *   `Provider` or `Lazy` wrappers for any of the above bindings
+*   A `Provider` of a `Lazy` of any of the above bindings (e.g.,
+    `Provider<Lazy<CoffeeMaker>>`)
 *   A `MembersInjector` for any type
 
 ### Singletons and Scoped Bindings
@@ -283,7 +285,6 @@ Components may have multiple scope annotations applied. This declares that they
 are all aliases to the same scope, and so that component may include scoped
 bindings with any of the scopes it declares.
 
-<a name="reusable-scope"></a>
 ### Reusable scope
 
 Sometimes you want to limit the number of times an `@Inject`-constructed class
