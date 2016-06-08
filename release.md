@@ -117,6 +117,13 @@ mvn versions:set versions:commit -DnewVersion=2.1
 git commit
 ```
 
+Make sure to also update any not-yet-released version numbers in Javadoc to
+the the upcoming version.
+
+```shell
+sed -i s/"@since 2.NEXT"/"@since 2.<new version>"/g $(find . | grep \\\\.java)
+```
+
 This will set all versions of projects connected in <module> sections from
 the parent pom - in short, all the parts of dagger will be set to be (and
 depend on) `2.1`.

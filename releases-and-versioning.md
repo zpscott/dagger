@@ -46,6 +46,12 @@ breaking change will happen *at least* 6 months after warning documentation
 (typically via `@Deprecated`) is added, and will always include migration
 instructions.
 
+### Version "`NEXT`"
+
+For features that will be introduced in the upcoming release, use NEXT as the
+[`API`][#version-policy] version. These will be updated as part of the release
+process.
+
 ## Release schedule
 
 As of March 2016, the Dagger team is aiming to produce a versioned release every

@@ -189,15 +189,19 @@ final class DispatchModule {
 
   @Produces
   static ListenableFuture<Html> dispatch(
-      Map<DispatchPath, Producer<Html>> dispatchers, Url url) {
+      Map<String, Producer<Html>> dispatchers, Url url) {
     return dispatchers.get(url.path()).get();
   }
 }
 ```
 
-Note that here, `dispatch()` is requesting
-`Map<DispatchPath, Producer<Html>>`; this ensures that only the dispatch
-handler that was requested will be executed.
+Note that here, `dispatch()` is requesting map values of the type
+`Producer<Html>`; this ensures that only the dispatch handler that was
+requested will be executed.
+
+Also note that `DispatchPath` is a [simple map key]
+(multibindings.md#simple-map-keys), but that [complex map keys]
+(multibindings.md#complex-map-keys) are supported as well.
 
 ## Scoping
 
