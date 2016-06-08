@@ -1,8 +1,4 @@
 dagger
-dagger.internal
-dagger.internal.codegen
 dagger.multibindings
 dagger.producers
-dagger.producers.internal
 dagger.producers.monitoring
-dagger.producers.monitoring.internal
