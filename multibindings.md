@@ -316,31 +316,26 @@ class MyProviderMapModule {
 
 ## Declaring multibindings
 
-You can declare that a multibound set or map is bound by nesting a
-[`@Multibindings`]-annotated interface within a module, with methods that return
-the sets or maps you want to declare.
+You can declare that a multibound set or map is bound by adding an abstract
+[`@Multibinds`]-annotated method to a module that returns the set or map you
+want to declare.
 
-You do not have to use [`@Multibindings`] for sets or maps that have at least
-one contribution, but you do have to declare them if they may be empty.
-    
+You do not have to use [`@Multibinds`] for sets or maps that have at least one
+[`@IntoSet`], [`@ElementsIntoSet`], or [`@IntoMap`] binding, but you do have to
+declare them if they may be empty.
+
 ```java
 @Module
-class MyModule {
-  @Multibindings
-  interface MyMultibindings {
-    Set<Foo> aSet();
-    @MyQualifier Set<Foo> aQualifiedSet();
-    Map<String, Foo> aMap();
-    @MyQualifier Map<String, Foo> aQualifiedMap();
-  }
+abstract class MyModule {
+  @Multibinds abstract Set<Foo> aSet();
+  @Multibinds @MyQualifier abstract Set<Foo> aQualifiedSet();
+  @Multibinds abstract Map<String, Foo> aMap();
+  @Multibinds @MyQualifier abstract Map<String, Foo> aQualifiedMap();
 }
 ```
 
-All methods on the interface and any supertypes (except for methods on `Object`)
-are used to declare multibindings. The names of the interface and its methods
-are ignored. A given set or map multibinding can be declared any number of times
-without error. Dagger never implements the interface or calls any of its
-methods.
+A given set or map multibinding can be declared any number of times without
+error. Dagger never implements or calls any [`@Multibinds`] methods.
 
 <!-- TODO(dpb): Render as footnote once Github supports them. -->
 
@@ -461,7 +456,7 @@ class ChildModule {
 [`@IntoMap`]: http://google.github.io/dagger/api/latest/dagger/multibindings/IntoMap.html
 [`@IntoSet`]: http://google.github.io/dagger/api/latest/dagger/multibindings/IntoSet.html
 [`@MapKey`]: http://google.github.io/dagger/api/latest/dagger/MapKey.html
-[`@Multibindings`]: http://google.github.io/dagger/api/latest/dagger/Multibindings.html
+[`@Multibinds`]: http://google.github.io/dagger/api/latest/dagger/multibindings/Multibinds.html
 
 
 
