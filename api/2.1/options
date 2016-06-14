@@ -1,0 +1,24 @@
+-classpath
+'/usr/local/google/home/ronshapiro/open-source/dagger/core/target/classes:/usr/local/google/home/ronshapiro/open-source/dagger/producers/target/classes:/usr/local/google/home/ronshapiro/open-source/dagger/compiler/target/classes:/usr/local/google/home/ronshapiro/open-source/dagger/gwt/target/classes:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/text/org.eclipse.text/3.5.101/org.eclipse.text-3.5.101.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/dagger/dagger/2.1-SNAPSHOT/dagger-2.1-SNAPSHOT-sources.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/dagger/dagger-producers/2.1-SNAPSHOT/dagger-producers-2.1-SNAPSHOT.jar:/usr/local/google/home/ronshapiro/.m2/repository/javax/inject/javax.inject/1/javax.inject-1.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/equinox/org.eclipse.equinox.common/3.6.0/org.eclipse.equinox.common-3.6.0.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.commands/3.6.0/org.eclipse.core.commands-3.6.0.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.resources/3.7.100/org.eclipse.core.resources-3.7.100.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/dagger/dagger/2.1-SNAPSHOT/dagger-2.1-SNAPSHOT.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/jdt/org.eclipse.jdt.core/3.10.0/org.eclipse.jdt.core-3.10.0.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.expressions/3.4.300/org.eclipse.core.expressions-3.4.300.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.jobs/3.5.100/org.eclipse.core.jobs-3.5.100.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/googlejavaformat/google-java-format/0.1-alpha/google-java-format-0.1-alpha.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/guava/guava/19.0-rc2/guava-19.0-rc2.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/equinox/org.eclipse.equinox.app/1.3.100/org.eclipse.equinox.app-1.3.100.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/beust/jcommander/1.47/jcommander-1.47.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.runtime/3.7.0/org.eclipse.core.runtime-3.7.0.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/equinox/org.eclipse.equinox.registry/3.5.101/org.eclipse.equinox.registry-3.5.101.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/auto/service/auto-service/1.0-rc2/auto-service-1.0-rc2.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/squareup/javapoet/1.5.1/javapoet-1.5.1.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.contenttype/3.4.100/org.eclipse.core.contenttype-3.4.100.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/auto/value/auto-value/1.0/auto-value-1.0.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/auto/auto-common/0.5/auto-common-0.5.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/osgi/org.eclipse.osgi/3.7.1/org.eclipse.osgi-3.7.1.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/core/org.eclipse.core.filesystem/1.3.100/org.eclipse.core.filesystem-1.3.100.jar:/usr/local/google/home/ronshapiro/.m2/repository/org/eclipse/equinox/org.eclipse.equinox.preferences/3.4.1/org.eclipse.equinox.preferences-3.4.1.jar:/usr/local/google/home/ronshapiro/.m2/repository/com/google/code/findbugs/jsr305/2.0.1/jsr305-2.0.1.jar:/usr/local/buildtools/java/jdk8-google-v7-64/jre/../lib/tools.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/usr/local/google/home/ronshapiro/open-source/dagger/core/src/main/java:/usr/local/google/home/ronshapiro/open-source/dagger/producers/src/main/java:/usr/local/google/home/ronshapiro/open-source/dagger/compiler/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2016 <a href="http://www.google.com">Google, Inc.</a>. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/usr/local/google/home/ronshapiro/open-source/dagger/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Dagger Dependency Injection 2.1-SNAPSHOT API'
+-linkoffline
+'http://docs.oracle.com/javase/7/docs/api' '/usr/local/google/home/ronshapiro/open-source/dagger/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Dagger (Parent) 2.1-SNAPSHOT API'
