@@ -2,4 +2,3 @@ dagger
 dagger.multibindings
 dagger.producers
 dagger.producers.monitoring
-dagger.releaseablereferences
