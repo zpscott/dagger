@@ -3,7 +3,6 @@ layout: default
 title: Frequently Asked Questions
 ---
 
-<!-- note that due to b/28762248 this is rendering weirdly small -->
 # [`@Binds`]
 
 ## Why is `@Binds` different from `@Provides`?
