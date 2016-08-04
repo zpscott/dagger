@@ -3,7 +3,6 @@ layout: default
 title: Frequently Asked Questions
 ---
 
-<!-- note that due to b/28762248 this is rendering weirdly small -->
 # [`@Binds`]
 
 ## Why is `@Binds` different from `@Provides`?
@@ -62,20 +61,19 @@ provides an `HttpServletRequest` and binds `ServletRequest` might look like:
 final class HttpServletRequestModule {
   @Module
   interface Declarations {
-    @Binds ServletRequest bindServletRequest(HttpServletRequet httpRequest);
+    @Binds ServletRequest bindServletRequest(HttpServletRequest httpRequest);
   }
 
-  private final HttpServletRequet httpRequest;
+  private final HttpServletRequest httpRequest;
 
-  HttpServletRequestModule(HttpServletRequet httpRequest) {
+  HttpServletRequestModule(HttpServletRequest httpRequest) {
     this.httpRequest = httpRequest;
   }
 }
 ```
 
+<!-- References -->
 
 [`@Binds`]: http://google.github.io/dagger/api/latest/dagger/Binds.html
 [`@Provides`]: http://google.github.io/dagger/api/latest/dagger/Provides.html
-
-
 
