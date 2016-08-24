@@ -511,8 +511,7 @@ compiler plugin:
 ## License
 
 ```
-Copyright 2014 Google, Inc.
-Copyright 2012 Square, Inc.
+Copyright 2012 The Dagger Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
