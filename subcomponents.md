@@ -249,7 +249,7 @@ subcomponents, and are not visible within the parent.
 ```java
 @Component(modules = ParentModule.class)
 interface Parent {
-  Map<String, Int> map();
+  Map<String, Integer> map();
   Set<String> set();
 
   Child child();
@@ -278,9 +278,9 @@ class ParentModule {
   }
 }
 
-@Subcomponent(modules = Child.class)
+@Subcomponent(modules = ChildModule.class)
 interface Child {
-  Map<String, String> map();
+  Map<String, Integer> map();
   Set<String> set();
 }
 
