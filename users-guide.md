@@ -466,8 +466,8 @@ those, but that isn't very useful.)
 An optional binding that is absent in one component can be present in a
 subcomponent if the subcomponent includes a binding for the underlying type.
 
-At the moment, only Guava's [`Optional`][guava-optional] works, although we are
-planning to support Java 8's [`Optional`][jdk-optional] as well.
+You can use either Guava's [`Optional`][guava-optional] or Java 8's
+[`Optional`][jdk-optional].
 
 ### Compile-time Validation
 
